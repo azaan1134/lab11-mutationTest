@@ -150,3 +150,37 @@ JaCoCo кодын бүх мөрийг (25/25) тестээр ажилласан 
 
 
 
+\---
+
+
+
+\## 3. Хэсэг B — Тестүүдийг хүчтэй болгох
+
+
+
+\### B1 — Assertion-уудыг яг утгатай болгосон
+
+
+
+Оролтуудыг starter-тэй яг ижил үлдээгээд, зөвхөн сул шалгалтуудыг (`assertNotNull`, `assertTrue(муж)`) `assertEquals`-ээр сольсон. Жишээ нь `letterGrade(95)` яг `"A"`, `gpa({95,85})` яг `3.5`, `scholarship(3.9,16,false)` яг `100` буцаахыг шалгана.
+
+
+
+\[`results/pit-B1.txt`](results/pit-B1.txt)-ээс:
+
+
+
+```
+
+>> Generated 63 mutations Killed 45 (71%)
+
+>> Mutations with no coverage 0. Test strength 71%
+
+```
+
+
+
+B1-ээр "replaced return value", "replaced double addition with subtraction", "switch default" болон зарим "removed conditional" мутантууд үхсэн. Харин "changed conditional boundary" мутантууд амьд хэвээр үлдсэн, учир нь тест заагийн утгуудыг (90, 3.8, 15 г.м.) огт ашигладаггүй.
+
+
+
