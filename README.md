@@ -184,3 +184,57 @@ B1-ээр "replaced return value", "replaced double addition with subtraction", 
 
 
 
+\### B2 — Зааг утгын тестүүд нэмсэн
+
+
+
+\- `letterGrade`: 100, 90/89.99, 80/79.99, 70/69.99, 60/59.99, 0 (`@ParameterizedTest`); хүчингүй утга −0.01, 100.01
+
+\- `gpa`: A/B/C/D/F үсгэн дүн тус бүрийг дангаар нь, 5 үсэг холимог, заагийн оноонууд, хүчингүй оноотой массив
+
+\- `scholarship`: 3.8/15, 3.79/15, 3.8/14, 3.4/12, 3.39/12, 3.4/11, 3.0/0, 2.99/20; оролтын хязгаар (gpa 0 ба 4, credits 0); зөрчилтэй тохиолдлууд; хүчингүй утга −0.01, 4.01
+
+
+
+\[`results/pit-B2.txt`](results/pit-B2.txt)-ээс:
+
+
+
+```
+
+>> Generated 63 mutations Killed 63 (100%)
+
+>> Mutations with no coverage 0. Test strength 100%
+
+```
+
+
+
+\### Хэмжилтийн явц
+
+
+
+| Хэмжилт | Файл | Killed / Generated | Mutation Coverage | Test Strength |
+
+|---|---|---|---|---|
+
+| Эхлэл (Starter) | \[`results/pit-start.txt`](results/pit-start.txt) | 18 / 63 | 29% | 29% |
+
+| B1-ийн дараа | \[`results/pit-B1.txt`](results/pit-B1.txt) | 45 / 63 | 71% | 71% |
+
+| B2-ийн дараа (эцсийн) | \[`results/pit-B2.txt`](results/pit-B2.txt) | 63 / 63 | 100% | 100% |
+
+
+
+Line coverage гурван хэмжилтийн аль алинд нь 100% (25/25) байсан ч mutation score 29% → 71% → 100% болж өссөн. Equivalent мутант байгаагүй тул Test Strength нь Mutation Coverage-тэй тэнцүү гарсан.
+
+
+
+Эцсийн PIT тайлан:
+
+
+
+!\[PIT final](images/pit-B2.png)
+
+
+
