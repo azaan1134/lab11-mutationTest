@@ -32,11 +32,11 @@ OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sha
 
 Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
 
-Maven home: C:\\\\Program Files\\\\apache-maven-3.9.16
+Maven home: C:\\Program Files\\apache-maven-3.9.16
 
-Java version: 17.0.20.1, vendor: Eclipse Adoptium, runtime: C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-17.0.20.101-hotspot
+Java version: 17.0.20.1, vendor: Eclipse Adoptium, runtime: C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.101-hotspot
 
-Default locale: en\\\_US, platform encoding: Cp1252
+Default locale: en\_US, platform encoding: Cp1252
 
 OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 
@@ -237,4 +237,72 @@ Line coverage гурван хэмжилтийн аль алинд нь 100% (25/
 !\[PIT final](images/pit-B2.png)
 
 
+
+\---
+
+
+
+\## 4. Хэсэг C — Гар мутаци (PIT-гүйгээр)
+
+
+
+\### Гар мутант: `gpa >= 3.8` → `gpa > 3.8`
+
+
+
+`scholarship()`-ийн 52-р мөрийг гараар өөрчлөөд `mvn test` ажиллуулсан. Нотолгоо: \[`results/mvn-test-manual-mutant.txt`](results/mvn-test-manual-mutant.txt)
+
+
+
+```
+
+\[ERROR] Tests run: 35, Failures: 1, Errors: 0, Skipped: 0
+
+\[ERROR]   ScholarshipCalculatorTest.scholarship\_boundaries:137 expected: <100> but was: <70>
+
+```
+
+
+
+\- \*\*Унасан тест:\*\* `scholarship\_boundaries(double, int, int)\[1]`, өөрөөр хэлбэл B2-д нэмсэн `scholarship(3.8, 15, false) = 100` зааг тест.
+
+\- \*\*Шалтгаан:\*\* мутацитай кодод gpa яг 3.8 үед `3.8 > 3.8` нөхцөл false болдог тул 100-ын оронд дараагийн дүрэм ажиллаж 70 буцаадаг.
+
+\- Starter-ийн сул тест энэ мутантыг барьж чадахгүй байсан, учир нь тэнд 3.8 гэсэн утга ашиглаагүй бөгөөд `assertTrue(0..100)` шалгалт 70-ыг ч давуулдаг.
+
+\- Туршилтын дараа `git restore src/main`-ээр кодыг буцаасан тул мутацитай код commit хийгдээгүй.
+
+
+
+\### Өөрийн зохиосон equivalent мутант
+
+
+
+`scholarship()`-ийн 52-р мөрийн `\&\&`-ийн хоёр хэсгийн байрыг сольсон:
+
+
+
+```java
+
+// Эх:      if (gpa >= 3.8 \&\& credits >= 15) return 100;
+
+// Мутант:  if (credits >= 15 \&\& gpa >= 3.8) return 100;
+
+```
+
+
+
+Хоёр нөхцөл хоёулаа гаж нөлөөгүй энгийн харьцуулалт тул `\&\&`-ийн дарааллыг солиход аль ч оролтод үр дүн нь яг адилхан гарна. Програмын ажиглагдах зан төлөв огт өөрчлөгдөхгүй учраас ямар ч тест энэ мутантыг "алж" чадахгүй.
+
+
+
+\---
+
+
+
+\## 5. Дүгнэлт
+
+
+
+Code coverage нь тест ажиллах үед кодын аль мөр, аль салаа \*ажилласныг\* хэмждэг бол mutation score нь тест кодын алдааг \*барьж чадах эсэхийг\* хэмждэг. Энэ лабын starter тест Line coverage 100% (25/25) өгч байсан ч mutation score ердөө 29% байсан. Учир нь `assertNotNull`, `assertTrue(муж)` гэх мэт сул assertion нь буруу утга буцаасан ч давж гардаг. Assertion-уудыг яг утгатай болгоход (B1) score 71% болж, "replaced return value" болон math мутантууд үхсэн. Зааг утгын тестүүд нэмэхэд (B2) "conditional boundary" болон "removed conditional" мутантууд үхэж score 100% хүрсэн. Энэ бүх хугацаанд line coverage 100% хэвээр байсан нь хамралт тестийн чанарыг хэмждэггүйг тод харуулж байна. AI-аар бичүүлсэн тест ихэвчлэн бүх мөрийг дайрдаг тул хамралт өндөр харагддаг ч assertion нь сул эсвэл зааг утгыг алгассан байх магадлалтай. Тиймээс AI-ийн бичсэн тестийг mutation score-оор шалгаж, амьд үлдсэн мутант бүрийг тест дутуу эсвэл equivalent гэж ангилсны дараа л итгэж ашиглах хэрэгтэй.
 
